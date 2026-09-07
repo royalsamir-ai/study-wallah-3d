@@ -1,6 +1,7 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { BookHeart, Github, Twitter, Mail } from 'lucide-react';
+import { BookHeart, Github, Instagram, Mail } from 'lucide-react';
 
 const footerLinks = {
   Platform: [
@@ -43,13 +44,15 @@ export default function Footer() {
             </motion.a>
             <div className="flex items-center gap-4 mt-6">
               {[
-                { Icon: Github, label: 'GitHub', href: '#' },
-                { Icon: Twitter, label: 'Twitter', href: '#' },
+                { Icon: Github, label: 'GitHub', href: 'https://github.com/royalsamir-ai' },
+                { Icon: Instagram, label: 'Instagram', href: 'https://www.instagram.com/studywallah_samir' },
                 { Icon: Mail, label: 'Email', href: 'mailto:studywallahsamir.help@gmail.com' },
               ].map(({ Icon, label, href }) => (
                 <motion.a
                   key={label}
                   href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   whileHover={{ scale: 1.15, y: -2 }}
                   whileTap={{ scale: 0.9 }}
                   className="w-11 h-11 rounded-full glass-cute flex items-center justify-center transition-all"
@@ -105,7 +108,7 @@ export default function Footer() {
             className="typing-line text-sm md:text-base font-bold mx-auto"
             style={{ fontFamily: 'Fredoka, sans-serif', color: '#2E2A4A', maxWidth: '100%' }}
           >
-            ✨ Powered by Cuties | Crafted by Boss{' '}
+            ✨ Powered by Cuties | Crafted by{' '}
             <span className="text-royal-gradient">Royal Samir</span> ✨
           </p>
         </motion.div>
