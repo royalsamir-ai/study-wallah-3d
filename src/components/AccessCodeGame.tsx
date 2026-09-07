@@ -110,6 +110,11 @@ export default function AccessCodeGame() {
       setWon(true);
       setToken(generateToken());
       fireConfetti();
+      try {
+        window.localStorage.setItem('studywallah:token-unlocked', '1');
+      } catch {
+        /* ignore storage errors (private browsing, etc.) */
+      }
       window.dispatchEvent(new CustomEvent('studywallah:token-unlocked'));
     }
   }, [matches]);

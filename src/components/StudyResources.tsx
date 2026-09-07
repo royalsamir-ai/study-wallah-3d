@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import {
   Atom,
   Calculator,
@@ -9,12 +9,11 @@ import {
   BookOpen,
   Landmark,
   TrendingUp,
-  Download,
-  Lock,
-  X,
   FileText,
+  ArrowRight,
 } from 'lucide-react';
 import { studyResources, type StudyResource } from '@/data/resources';
+import TokenUnlockCard from '@/components/TokenUnlockCard';
 
 const iconMap: Record<string, React.ComponentType<{ className?: string; style?: React.CSSProperties }>> = {
   Atom,
@@ -38,22 +37,14 @@ const cardColors = [
   { bg: 'linear-gradient(135deg, #d4f4e9, #e0d4ff)', border: 'rgba(107, 191, 155, 0.25)', icon: '#6bbf9b', shadow: 'rgba(107, 191, 155, 0.12)' },
 ];
 
+const MotionLink = motion(Link);
+
 interface StudyResourcesProps {
   hasToken: boolean;
   onTokenNeeded: () => void;
 }
 
 export default function StudyResources({ hasToken, onTokenNeeded }: StudyResourcesProps) {
-  const [selected, setSelected] = useState<StudyResource | null>(null);
-
-  const handleDownload = (resource: StudyResource) => {
-    if (!hasToken) {
-      onTokenNeeded();
-      return;
-    }
-    setSelected(resource);
-  };
-
   return (
     <section id="resources" className="relative py-24 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
@@ -77,21 +68,10 @@ export default function StudyResources({ hasToken, onTokenNeeded }: StudyResourc
           {studyResources.map((resource, index) => {
             const Icon = iconMap[resource.icon] ?? FileText;
             const colors = cardColors[index % cardColors.length];
-            return (
-              <motion.div
-                key={resource.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-50px' }}
-                transition={{ duration: 0.4, delay: index * 0.05 }}
-                whileHover={{ y: -8, scale: 1.02 }}
-                className="group rounded-[2rem] p-5 transition-all"
-                style={{
-                  background: colors.bg,
-                  border: `2px solid ${colors.border}`,
-                  boxShadow: `0 8px 30px ${colors.shadow}, inset 0 1px 0 rgba(255, 255, 255, 0.5)`,
-                }}
-              >
+            const isArticle = Boolean(resource.slug);
+
+            const cardInner = (
+              <>
                 <div className="flex items-start justify-between mb-4">
                   <motion.div
                     whileHover={{ scale: 1.15, rotate: -5 }}
@@ -121,111 +101,69 @@ export default function StudyResources({ hasToken, onTokenNeeded }: StudyResourc
                   <span>{resource.size}</span>
                 </div>
 
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => handleDownload(resource)}
-                  className="w-full flex items-center justify-center gap-2 py-2.5 rounded-full text-sm font-semibold transition-all"
-                  style={
-                    hasToken
-                      ? {
-                          background: 'linear-gradient(135deg, #ffb5d0, #FF8FB3)',
-                          color: '#fff',
-                          fontFamily: 'Fredoka, sans-serif',
-                          boxShadow: '0 4px 15px rgba(255, 143, 184, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.3)',
-                        }
-                      : {
-                          background: 'rgba(255, 255, 255, 0.5)',
-                          color: '#4a4769',
-                          fontFamily: 'Fredoka, sans-serif',
-                          border: '2px solid rgba(255, 181, 208, 0.3)',
-                        }
-                  }
+                {isArticle ? (
+                  <span
+                    className="w-full flex items-center justify-center gap-2 py-2.5 rounded-full text-sm font-semibold transition-all"
+                    style={{
+                      background: 'linear-gradient(135deg, #ffb5d0, #FF8FB3)',
+                      color: '#fff',
+                      fontFamily: 'Fredoka, sans-serif',
+                      boxShadow: '0 4px 15px rgba(255, 143, 184, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.3)',
+                    }}
+                  >
+                    Read Study Guide
+                    <ArrowRight className="w-4 h-4" />
+                  </span>
+                ) : (
+                  <TokenUnlockCard title={resource.title} hasToken={hasToken} onTokenNeeded={onTokenNeeded} />
+                )}
+              </>
+            );
+
+            const cardStyle: React.CSSProperties = {
+              background: colors.bg,
+              border: `2px solid ${colors.border}`,
+              boxShadow: `0 8px 30px ${colors.shadow}, inset 0 1px 0 rgba(255, 255, 255, 0.5)`,
+            };
+
+            if (isArticle) {
+              return (
+                <MotionLink
+                  key={resource.id}
+                  to={`/resource/${resource.slug}`}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-50px' }}
+                  transition={{ duration: 0.4, delay: index * 0.05 }}
+                  whileHover={{ y: -8, scale: 1.02 }}
+                  className="group rounded-[2rem] p-5 transition-all block cursor-pointer"
+                  style={cardStyle}
+                  aria-label={`Read the full ${resource.title} study guide`}
                 >
-                  {hasToken ? (
-                    <>
-                      <Download className="w-4 h-4" />
-                      Download PDF
-                    </>
-                  ) : (
-                    <>
-                      <Lock className="w-4 h-4" />
-                      Unlock with Token
-                    </>
-                  )}
-                </motion.button>
+                  {cardInner}
+                </MotionLink>
+              );
+            }
+
+            return (
+              <motion.div
+                key={resource.id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-50px' }}
+                transition={{ duration: 0.4, delay: index * 0.05 }}
+                whileHover={{ y: -8, scale: 1.02 }}
+                className="group rounded-[2rem] p-5 transition-all"
+                style={cardStyle}
+              >
+                {cardInner}
               </motion.div>
             );
           })}
         </div>
       </div>
-
-      {/* Download modal */}
-      <AnimatePresence>
-        {selected && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setSelected(null)}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4"
-            style={{ background: 'rgba(45, 42, 74, 0.3)', backdropFilter: 'blur(8px)' }}
-          >
-            <motion.div
-              initial={{ scale: 0.85, opacity: 0, y: 20 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.85, opacity: 0, y: 20 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-              onClick={(e) => e.stopPropagation()}
-              className="glass-premium rounded-[2.5rem] p-8 max-w-md w-full text-center shadow-cute-premium relative"
-            >
-              <button
-                onClick={() => setSelected(null)}
-                className="absolute top-4 right-4 w-9 h-9 rounded-full glass-cute flex items-center justify-center transition-all hover:scale-110"
-                style={{ color: '#4a4769' }}
-                aria-label="Close"
-              >
-                <X className="w-4 h-4" />
-              </button>
-              <motion.div
-                animate={{ rotate: [0, -5, 5, 0] }}
-                transition={{ duration: 2, repeat: Infinity }}
-                className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-5"
-                style={{ background: 'linear-gradient(135deg, #ffd6e5, #e0d4ff)' }}
-              >
-                <FileText className="w-8 h-8" style={{ color: '#FF8FB3' }} />
-              </motion.div>
-              <h3 className="text-xl font-bold mb-2" style={{ fontFamily: 'Fredoka, sans-serif', color: '#2E2A4A' }}>
-                {selected.title} 🎀
-              </h3>
-              <p className="text-sm mb-6" style={{ color: '#4a4769', fontFamily: 'Quicksand, sans-serif' }}>
-                This is a demo resource. In a production deployment, your PDF
-                download would start here. Happy studying! 💖
-              </p>
-              <div className="flex gap-3">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => setSelected(null)}
-                  className="flex-1 py-2.5 rounded-full font-semibold transition-all"
-                  style={{ background: 'rgba(255, 255, 255, 0.5)', color: '#4a4769', fontFamily: 'Fredoka, sans-serif' }}
-                >
-                  Close
-                </motion.button>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => setSelected(null)}
-                  className="flex-1 py-2.5 rounded-full font-semibold text-white"
-                  style={{ background: 'linear-gradient(135deg, #ffb5d0, #FF8FB3)', fontFamily: 'Fredoka, sans-serif', boxShadow: '0 4px 15px rgba(255, 143, 184, 0.3)' }}
-                >
-                  Got it! 💖
-                </motion.button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </section>
   );
 }
+
+export type { StudyResource };

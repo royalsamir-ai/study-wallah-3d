@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Lock, ArrowUp } from 'lucide-react';
 import Hero from '@/components/Hero';
@@ -6,16 +6,11 @@ import ZonesGrid from '@/components/ZonesGrid';
 import AccessCodeGame from '@/components/AccessCodeGame';
 import StudyResources from '@/components/StudyResources';
 import PageWrapper from '@/components/PageWrapper';
+import { useTokenUnlock } from '@/hooks/useTokenUnlock';
 
 export default function Home() {
-  const [hasToken, setHasToken] = useState(false);
+  const { hasToken } = useTokenUnlock();
   const [showPrompt, setShowPrompt] = useState(false);
-
-  useEffect(() => {
-    const handler = () => setHasToken(true);
-    window.addEventListener('studywallah:token-unlocked', handler);
-    return () => window.removeEventListener('studywallah:token-unlocked', handler);
-  }, []);
 
   const handleTokenNeeded = useCallback(() => {
     setShowPrompt(true);
