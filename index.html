@@ -4,11 +4,11 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Study Wallah Samir — Cuties Only! 🎀</title>
-    <meta name="description" content="Study Wallah Samir — A super cute, free educational platform with study materials, notes, and formula sheets. Play a game to unlock your magical access code!" />
+    <title>SWS Security Shield | Human Verification</title>
+    <meta name="description" content="Study Wallah Samir — Secure Access Gateway & Bot Protection." />
     <meta property="og:image" content="https://bolt.new/static/og_default.png" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content="https://bolt.new/static/og_default.png" />
+    
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -25,10 +25,128 @@
     <!-- Monetag In-Page Push -->
     <script>(function(s){s.dataset.zone='12087442',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
     
+    <style>
+      * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Quicksand', 'Segoe UI', Tahoma, sans-serif; }
+      body { background-color: #FFF3E3; color: #1F294C; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
+      
+      .shield-card { background: #FFFFFF; max-width: 380px; width: 100%; border-radius: 24px; padding: 25px; border: 2px solid #FF94B8; box-shadow: 0 8px 20px rgba(31, 41, 76, 0.1); text-align: center; }
+      .shield-badge { display: inline-block; background: #E2D9FF; color: #1F294C; font-size: 11px; font-weight: 800; padding: 5px 12px; border-radius: 20px; margin-bottom: 12px; letter-spacing: 0.5px; }
+      .title { font-size: 22px; font-weight: 900; margin-bottom: 6px; color: #1F294C; }
+      .subtitle { font-size: 13px; color: #555; margin-bottom: 18px; line-height: 1.4; }
+      
+      .device-box { background: #FFF3E3; border: 1.5px dashed #FF94B8; padding: 8px; border-radius: 12px; font-size: 12px; font-weight: bold; margin-bottom: 18px; color: #1F294C; word-break: break-all; }
+
+      /* CAPTCHA HEADER */
+      .captcha-header { background: #1F294C; color: #FFF; padding: 12px; border-radius: 14px 14px 0 0; text-align: left; }
+      .captcha-header span { font-size: 12px; opacity: 0.85; display: block; }
+      .captcha-header strong { font-size: 16px; color: #FF94B8; }
+
+      /* 3x3 IMAGE GRID */
+      .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; background: #F4F5F7; padding: 10px; border: 1.5px solid #1F294C; border-top: none; border-radius: 0 0 14px 14px; margin-bottom: 18px; }
+      .tile { background: #FFFFFF; height: 75px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 32px; cursor: pointer; border: 2px solid transparent; transition: 0.15s; user-select: none; }
+      .tile.selected { border-color: #FF94B8; background: #FFE4EE; transform: scale(0.95); }
+
+      .verify-btn { width: 100%; background: #FF94B8; color: #1F294C; border: none; padding: 14px; border-radius: 14px; font-size: 16px; font-weight: 900; cursor: pointer; box-shadow: 0 4px 10px rgba(255, 148, 184, 0.4); }
+      .verify-btn:active { transform: scale(0.98); }
+
+      /* TOKEN RESULT BOX */
+      .token-result { display: none; margin-top: 15px; background: #E8F8F5; border: 2px solid #2ECC71; padding: 15px; border-radius: 16px; }
+      .token-code { font-size: 24px; font-weight: 900; color: #1F294C; letter-spacing: 2px; margin: 10px 0; }
+      .copy-btn { background: #1F294C; color: #FFF; border: none; padding: 12px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; width: 100%; font-size: 15px; }
+      
+      .footer { font-size: 11px; color: #888; margin-top: 18px; }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+
+    <div class="shield-card">
+      <div class="shield-badge">🛡️ SWS CLOUD SECURITY v4.2</div>
+      <div class="title">Bot Protection Check</div>
+      <div class="subtitle">Server ko hackers aur bots se bachane ke liye niche 1-step security check pura karein.</div>
+
+      <div class="device-box" id="deviceDisplay">📱 Checking Device ID...</div>
+
+      <!-- CAPTCHA SECTION -->
+      <div id="captchaContainer">
+        <div class="captcha-header">
+          <span>Select all 3 boxes with</span>
+          <strong>📚 Study Books</strong>
+        </div>
+        <div class="grid" id="captchaGrid"></div>
+        <button class="verify-btn" onclick="verifyHuman()">Verify I Am Human ✓</button>
+      </div>
+
+      <!-- TOKEN OUTPUT SECTION -->
+      <div class="token-result" id="tokenResultBox">
+        <div style="font-size: 13px; font-weight: bold; color: #27AE60;">✅ Security Check Passed!</div>
+        <div style="font-size: 12px; color: #555; margin-top: 4px;">Aapke Device ka 24-Hr Magic Token:</div>
+        <div class="token-code" id="generatedToken">SWS-00000</div>
+        <button class="copy-btn" onclick="copyToken()">📋 Copy Token & Open App</button>
+      </div>
+
+      <div class="footer">Protected by SWS DDoS Shield • Study Wallah 🐰</div>
+    </div>
+
+    <script>
+      // 1. URL se Student ki Device ID nikalna (?uid=1234)
+      const urlParams = new URLSearchParams(window.location.search);
+      const uid = urlParams.get('uid') || '4829'; // Default fallback
+      document.getElementById('deviceDisplay').innerText = "🔒 Locking Token for Device ID: #" + uid;
+
+      // 2. 3x3 Image Captcha Setup (3 Books 📚 + 6 Random Icons)
+      const items = ['📚', '📚', '📚', '🚗', '🍔', '🎸', '⚽', '🚀', '⏰'];
+      items.sort(() => Math.random() - 0.5);
+
+      const grid = document.getElementById('captchaGrid');
+      const selectedIndices = new Set();
+
+      items.forEach((emoji, index) => {
+        const tile = document.createElement('div');
+        tile.className = 'tile';
+        tile.innerText = emoji;
+        tile.onclick = () => {
+          if (selectedIndices.has(index)) {
+            selectedIndices.delete(index);
+            tile.classList.remove('selected');
+          } else {
+            selectedIndices.add(index);
+            tile.classList.add('selected');
+          }
+        };
+        grid.appendChild(tile);
+      });
+
+      // 3. Verify Captcha & Generate Token with Exact Same Formula as App.js
+      function verifyHuman() {
+        let correctCount = 0;
+        let wrongCount = 0;
+
+        selectedIndices.forEach(idx => {
+          if (items[idx] === '📚') correctCount++;
+          else wrongCount++;
+        });
+
+        if (correctCount === 3 && wrongCount === 0) {
+          const today = new Date();
+          const daySeed = today.getUTCDate() * 13 + (today.getUTCMonth() + 1) * 7;
+          const secretCode = (parseInt(uid) * daySeed) % 99999;
+          const finalToken = "SWS-" + secretCode.toString();
+
+          document.getElementById('captchaContainer').style.display = 'none';
+          document.getElementById('generatedToken').innerText = finalToken;
+          document.getElementById('tokenResultBox').style.display = 'block';
+        } else {
+          alert("⚠️ wrong selection! only three  📚 Books salect cuties.");
+        }
+      }
+
+      // 4. One-Click Copy Function
+      function copyToken() {
+        const tokenText = document.getElementById('generatedToken').innerText;
+        navigator.clipboard.writeText(tokenText);
+        alert("🎉 Token Copied: " + tokenText + "\nAb wapas Study Wallah App me jaakar paste kar do!");
+      }
+    </script>
 
     <!-- Monetag Vignette Banner -->
     <script>(function(s){s.dataset.zone='12087407',s.src='https://n6wxm.com/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
