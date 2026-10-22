@@ -6,12 +6,6 @@ export interface StudyResource {
   icon: string;
   pages: number;
   size: string;
-  /**
-   * When present, this card links to a dedicated, text-rich full-page
-   * article at /resource/:slug instead of opening the quick-download
-   * modal directly. See src/data/articles.tsx for the article content.
-   */
-  slug?: string;
 }
 
 export const studyResources: StudyResource[] = [
@@ -23,7 +17,6 @@ export const studyResources: StudyResource[] = [
     icon: 'Atom',
     pages: 24,
     size: '2.1 MB',
-    slug: 'physics',
   },
   {
     id: 'math-short-notes',
@@ -33,7 +26,6 @@ export const studyResources: StudyResource[] = [
     icon: 'Calculator',
     pages: 32,
     size: '3.4 MB',
-    slug: 'maths',
   },
   {
     id: 'chemistry-periodic',
@@ -43,7 +35,6 @@ export const studyResources: StudyResource[] = [
     icon: 'FlaskConical',
     pages: 18,
     size: '1.8 MB',
-    slug: 'chemistry',
   },
   {
     id: 'biology-diagrams',

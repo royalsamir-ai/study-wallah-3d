@@ -12,8 +12,9 @@ import {
   FileText,
   ArrowRight,
 } from 'lucide-react';
-import { studyResources, type StudyResource } from '@/data/resources';
-import TokenUnlockCard from '@/components/TokenUnlockCard';
+import { studyResources } from '@/data/resources';
+import { subjectArticles } from '@/data/subjectArticles';
+import DownloadUnlockButton from './DownloadUnlockButton';
 
 const iconMap: Record<string, React.ComponentType<{ className?: string; style?: React.CSSProperties }>> = {
   Atom,
@@ -36,8 +37,6 @@ const cardColors = [
   { bg: 'linear-gradient(135deg, #ffe9f3, #ffd9b8)', border: 'rgba(255, 143, 184, 0.25)', icon: '#e6a26b', shadow: 'rgba(230, 162, 107, 0.12)' },
   { bg: 'linear-gradient(135deg, #d4f4e9, #e0d4ff)', border: 'rgba(107, 191, 155, 0.25)', icon: '#6bbf9b', shadow: 'rgba(107, 191, 155, 0.12)' },
 ];
-
-const MotionLink = motion(Link);
 
 interface StudyResourcesProps {
   hasToken: boolean;
@@ -68,10 +67,22 @@ export default function StudyResources({ hasToken, onTokenNeeded }: StudyResourc
           {studyResources.map((resource, index) => {
             const Icon = iconMap[resource.icon] ?? FileText;
             const colors = cardColors[index % cardColors.length];
-            const isArticle = Boolean(resource.slug);
-
-            const cardInner = (
-              <>
+            const articleSlug = subjectArticles.find((a) => a.resourceId === resource.id)?.slug;
+            return (
+              <motion.div
+                key={resource.id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-50px' }}
+                transition={{ duration: 0.4, delay: index * 0.05 }}
+                whileHover={{ y: -8, scale: 1.02 }}
+                className="group rounded-[2rem] p-5 transition-all"
+                style={{
+                  background: colors.bg,
+                  border: `2px solid ${colors.border}`,
+                  boxShadow: `0 8px 30px ${colors.shadow}, inset 0 1px 0 rgba(255, 255, 255, 0.5)`,
+                }}
+              >
                 <div className="flex items-start justify-between mb-4">
                   <motion.div
                     whileHover={{ scale: 1.15, rotate: -5 }}
@@ -87,11 +98,28 @@ export default function StudyResources({ hasToken, onTokenNeeded }: StudyResourc
                 </div>
 
                 <h3 className="text-lg font-bold mb-2" style={{ fontFamily: 'Fredoka, sans-serif', color: '#2E2A4A' }}>
-                  {resource.title}
+                  {articleSlug ? (
+                    <Link to={`/resource/${articleSlug}`} className="hover:underline">
+                      {resource.title}
+                    </Link>
+                  ) : (
+                    resource.title
+                  )}
                 </h3>
                 <p className="text-sm leading-relaxed mb-4 line-clamp-3" style={{ color: '#4a4769', fontFamily: 'Quicksand, sans-serif' }}>
                   {resource.description}
                 </p>
+
+                {articleSlug && (
+                  <Link
+                    to={`/resource/${articleSlug}`}
+                    className="inline-flex items-center gap-1.5 text-sm font-bold mb-4 hover:gap-2.5 transition-all"
+                    style={{ color: colors.icon, fontFamily: 'Fredoka, sans-serif' }}
+                  >
+                    Read Full Guide
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+                )}
 
                 <div className="flex items-center gap-4 text-xs mb-4" style={{ color: '#8b85a7' }}>
                   <span className="flex items-center gap-1">
@@ -101,69 +129,13 @@ export default function StudyResources({ hasToken, onTokenNeeded }: StudyResourc
                   <span>{resource.size}</span>
                 </div>
 
-                {isArticle ? (
-                  <span
-                    className="w-full flex items-center justify-center gap-2 py-2.5 rounded-full text-sm font-semibold transition-all"
-                    style={{
-                      background: 'linear-gradient(135deg, #ffb5d0, #FF8FB3)',
-                      color: '#fff',
-                      fontFamily: 'Fredoka, sans-serif',
-                      boxShadow: '0 4px 15px rgba(255, 143, 184, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.3)',
-                    }}
-                  >
-                    Read Study Guide
-                    <ArrowRight className="w-4 h-4" />
-                  </span>
-                ) : (
-                  <TokenUnlockCard title={resource.title} hasToken={hasToken} onTokenNeeded={onTokenNeeded} />
-                )}
-              </>
-            );
-
-            const cardStyle: React.CSSProperties = {
-              background: colors.bg,
-              border: `2px solid ${colors.border}`,
-              boxShadow: `0 8px 30px ${colors.shadow}, inset 0 1px 0 rgba(255, 255, 255, 0.5)`,
-            };
-
-            if (isArticle) {
-              return (
-                <MotionLink
-                  key={resource.id}
-                  to={`/resource/${resource.slug}`}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: '-50px' }}
-                  transition={{ duration: 0.4, delay: index * 0.05 }}
-                  whileHover={{ y: -8, scale: 1.02 }}
-                  className="group rounded-[2rem] p-5 transition-all block cursor-pointer"
-                  style={cardStyle}
-                  aria-label={`Read the full ${resource.title} study guide`}
-                >
-                  {cardInner}
-                </MotionLink>
-              );
-            }
-
-            return (
-              <motion.div
-                key={resource.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-50px' }}
-                transition={{ duration: 0.4, delay: index * 0.05 }}
-                whileHover={{ y: -8, scale: 1.02 }}
-                className="group rounded-[2rem] p-5 transition-all"
-                style={cardStyle}
-              >
-                {cardInner}
+                <DownloadUnlockButton resource={resource} hasToken={hasToken} onTokenNeeded={onTokenNeeded} />
               </motion.div>
             );
           })}
         </div>
       </div>
+
     </section>
   );
 }
-
-export type { StudyResource };

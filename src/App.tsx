@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import SplashGate from '@/components/SplashGate';
 import Navbar from '@/components/Navbar';
@@ -10,8 +11,13 @@ import PrivacyPolicy from '@/pages/PrivacyPolicy';
 import Terms from '@/pages/Terms';
 import ResourceArticle from '@/pages/ResourceArticle';
 import NotFound from '@/pages/NotFound';
+import { trackVisitOnce } from '@/lib/firebaseStats';
 
 function App() {
+  useEffect(() => {
+    trackVisitOnce();
+  }, []);
+
   return (
     <BrowserRouter>
       <SplashGate />
@@ -21,11 +27,11 @@ function App() {
         <main className="flex-1">
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/resource/:slug" element={<ResourceArticle />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms" element={<Terms />} />
-            <Route path="/resource/:slug" element={<ResourceArticle />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>

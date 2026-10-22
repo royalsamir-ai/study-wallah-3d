@@ -1,4 +1,3 @@
-import { useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Lock, ArrowUp } from 'lucide-react';
 import Hero from '@/components/Hero';
@@ -6,23 +5,17 @@ import ZonesGrid from '@/components/ZonesGrid';
 import AccessCodeGame from '@/components/AccessCodeGame';
 import StudyResources from '@/components/StudyResources';
 import PageWrapper from '@/components/PageWrapper';
-import { useTokenUnlock } from '@/hooks/useTokenUnlock';
+import { useUnlockToken } from '@/hooks/useUnlockToken';
 
 export default function Home() {
-  const { hasToken } = useTokenUnlock();
-  const [showPrompt, setShowPrompt] = useState(false);
-
-  const handleTokenNeeded = useCallback(() => {
-    setShowPrompt(true);
-    setTimeout(() => setShowPrompt(false), 4000);
-  }, []);
+  const { hasToken, showPrompt, onTokenNeeded } = useUnlockToken();
 
   return (
     <PageWrapper>
       <Hero />
       <ZonesGrid />
       <AccessCodeGame />
-      <StudyResources hasToken={hasToken} onTokenNeeded={handleTokenNeeded} />
+      <StudyResources hasToken={hasToken} onTokenNeeded={onTokenNeeded} />
 
       {showPrompt && (
         <motion.div

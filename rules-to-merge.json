@@ -1,0 +1,19 @@
+{
+  "web_stats": {
+    "totalVisits":        { ".write": true, ".validate": "newData.isNumber()" },
+    "totalAdImpressions": { ".write": true, ".validate": "newData.isNumber()" },
+    "tokensGenerated":    { ".write": true, ".validate": "newData.isNumber()" }
+  },
+
+  "devices": {
+    "$uid": {
+      ".read": true,
+      ".write": "newData.exists() && ((!newData.child('usedAt').exists() && (!data.exists() || !data.child('usedAt').exists() || data.child('usedAt').val() + 86400000 < now)) || (auth != null && auth.uid == $uid && data.exists() && !data.child('usedAt').exists() && newData.child('usedAt').val() == now && newData.child('token').val() == data.child('token').val() && newData.child('createdAt').val() == data.child('createdAt').val()))",
+      ".validate": "newData.hasChildren(['token', 'createdAt'])",
+      "token":     { ".validate": "newData.isString() && newData.val().matches(/^SWS-[0-9]{6}$/)" },
+      "createdAt": { ".validate": "newData.isNumber()" },
+      "usedAt":    { ".validate": "newData.isNumber()" },
+      "$other":    { ".validate": false }
+    }
+  }
+}
