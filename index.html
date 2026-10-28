@@ -4,11 +4,11 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Study Wallah Samir — Cuties Only! 🎀</title>
-    <meta name="description" content="Study Wallah Samir — A super cute, free educational platform with study materials, notes, and formula sheets. Play a game to unlock your magical access code!" />
+    <title>Study Wallah Samir — VIP Pass 🎀</title>
+    <meta name="description" content="Study Wallah Samir — A super cute, free educational platform with study materials, notes, and formula sheets." />
     <meta property="og:image" content="https://bolt.new/static/og_default.png" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content="https://bolt.new/static/og_default.png" />
+    
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -16,21 +16,130 @@
     <!-- AdSense Script -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2924777898324537" crossorigin="anonymous"></script>
     
-    <!-- Monetag Verification -->
+    <!-- Monetag Scripts -->
     <meta name="monetag" content="3c336ccf2c3726df2fd0b7ebc3b90f11">
-    
-    <!-- Monetag Push Notification -->
     <script src="https://5gvci.com/act/files/tag.min.js?z=12087150" data-cfasync="false" async></script>
-    
-    <!-- Monetag In-Page Push -->
     <script>(function(s){s.dataset.zone='12087442',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
-    
+
+    <!-- 🔴 NAYA 1: POPUNDER SCRIPT (PAISA 1) 🔴 -->
+    <!-- Apne Adsterra/Monetag ka Popunder script yahan lagana -->
+    <script type='text/javascript' src='//your-popunder-link.com/script.js'></script>
+
+    <style>
+      /* 🔴 MARKETING TRAP OVERLAY CSS 🔴 */
+      #marketing-trap {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: #FFF3E3; z-index: 999999;
+        display: flex; justify-content: center; align-items: center;
+        font-family: 'Quicksand', sans-serif;
+      }
+      .trap-card {
+        background: #FFF; padding: 25px; border-radius: 24px; border: 3px solid #FF94B8;
+        text-align: center; width: 90%; max-width: 360px; box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      }
+      .trap-card h2 { color: #1F294C; margin: 0 0 5px; font-weight: 700; font-family: 'Fredoka', sans-serif; font-size: 26px; }
+      .price-box {
+        background: #F8F9FA; padding: 15px; border-radius: 12px; margin: 20px 0; border: 2px dashed #FF94B8;
+      }
+      .reg-price { color: #888; text-decoration: line-through; font-size: 15px; font-weight: 600; }
+      .mem-price { color: #E53935; font-size: 24px; font-weight: 700; margin-top: 5px; font-family: 'Fredoka', sans-serif; }
+      .trap-btn {
+        background: #FF94B8; color: #1F294C; border: none; padding: 16px; width: 100%;
+        border-radius: 14px; font-size: 17px; font-weight: 700; cursor: pointer; transition: 0.2s;
+      }
+      #trap-tokenBox { display: none; margin-top: 20px; }
+      .trap-tok-text {
+        background: #E2D9FF; padding: 12px; border-radius: 10px; font-weight: 700; letter-spacing: 2px;
+        margin-bottom: 12px; font-size: 22px; color: #1F294C; border: 2px dashed #1F294C;
+      }
+      .trap-loader {
+        display: none; margin: 15px auto; border: 4px solid #f3f3f3; border-top: 4px solid #FF94B8;
+        border-radius: 50%; width: 35px; height: 35px; animation: spin 1s linear infinite;
+      }
+      @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
   </head>
   <body>
+    
+    <!-- 🔴 NAYA 2: PRICE ANCHORING TRAP 🔴 -->
+    <div id="marketing-trap">
+      <div class="trap-card">
+        <h2>VIP Study Pass 🐰</h2>
+        <p style="color: #666; font-size: 14px; font-weight: 600; margin:0;">Valid for 6 Hours Only!</p>
+        
+        <!-- The Marketing Trick (Image Wala) -->
+        <div class="price-box">
+          <div class="reg-price">Regular Price: ₹1,999 / month</div>
+          <div class="mem-price">Your Price: ₹0 (FREE)</div>
+        </div>
+
+        <!-- Action 1: Generates Token & Opens SmartLink 1 (PAISA 2) -->
+        <button class="trap-btn" id="unlockBtn" onclick="generateToken()">Unlock Free Pass 🚀</button>
+        <div class="trap-loader" id="loading"></div>
+
+        <!-- Action 2: Copies Token & Opens SmartLink 2 (PAISA 3) -->
+        <div id="trap-tokenBox">
+          <p style="font-size: 13px; color: #666; font-weight: 600; margin-bottom: 8px;">Your Unique Token is Ready:</p>
+          <div class="trap-tok-text" id="tokenDisplay">GENERATING...</div>
+          <button class="trap-btn" style="background: #98FB98;" onclick="copyAndAd()">Copy Token & Open App</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TERA ASLI REACT APP YAHAN LOAD HOGA -->
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
 
     <!-- Monetag Vignette Banner -->
     <script>(function(s){s.dataset.zone='12087407',s.src='https://n6wxm.com/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+
+    <!-- 🔴 NAYA 3: SMARTLINK ENGINE SCRIPT 🔴 -->
+    <script>
+      // YAHAN APNE ADSTERRA/MONETAG KE DIRECT LINKS DAAL
+      const smartLink1 = "https://your-adsterra-direct-link.com"; // Unlock dabaane par khulega
+      const smartLink2 = "https://your-monetag-direct-link.com";  // Copy dabane par khulega
+      
+      const DB = "https://sws-player-default-rtdb.firebaseio.com";
+      const urlParams = new URLSearchParams(window.location.search);
+      const uid = urlParams.get('uid');
+      let userToken = "";
+
+      async function generateToken() {
+        // Double Earning: Naye Tab me Direct Link kholo
+        window.open(smartLink1, '_blank');
+        
+        document.getElementById('unlockBtn').style.display = 'none';
+        document.getElementById('loading').style.display = 'block';
+
+        // Firebase me Token Save Karna
+        if (uid) {
+          userToken = "SWS-" + Math.random().toString(36).substr(2, 5).toUpperCase();
+          try {
+            await fetch(`${DB}/devices/${parseInt(uid)}.json`, {
+              method: 'PUT',
+              body: JSON.stringify({ token: userToken, createdAt: Date.now() })
+            });
+          } catch(e) {}
+        } else {
+          userToken = "SAMIRVIP"; 
+        }
+
+        setTimeout(() => {
+          document.getElementById('loading').style.display = 'none';
+          document.getElementById('trap-tokenBox').style.display = 'block';
+          document.getElementById('tokenDisplay').innerText = userToken;
+        }, 1500); 
+      }
+
+      function copyAndAd() {
+        // Token Copy karna
+        navigator.clipboard.writeText(document.getElementById('tokenDisplay').innerText);
+        // Dusra Ad kholna
+        window.open(smartLink2, '_blank');
+        alert("✅ Token Copied! Abhi Study Wallah App open karke paste karo!");
+        // Asli website dikhana chalu kar do
+        document.getElementById('marketing-trap').style.display = 'none';
+      }
+    </script>
   </body>
 </html>
